@@ -107,4 +107,50 @@
             persistentVolumeClaim:
               claimName: mysql-pv-claim
     ```
+## initContainers
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init-myservice
+    image: busybox
+    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+  - name: init-mydb
+    image: busybox
+    command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
+```
+## Static Pods
+[static-pod](https://kubernetes.io/docs/tasks/administer-cluster/static-pod/)
+## job
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+spec:
+  template:
+    metadata:
+      name: pi
+    spec:
+      completions: 10
+      parallelism: 2
+      containers:
+      - name: pi
+        image: perl
+        command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+      restartPolicy: Never
+```
+## Network Policies
+[network-policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+## pv/pvc
+[pv/pvc/sc](https://github.com/kubernetes/examples/tree/master/staging/volumes/portworx)
 
