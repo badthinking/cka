@@ -137,12 +137,12 @@ kind: Job
 metadata:
   name: pi
 spec:
+  completions: 10
+  parallelism: 2
   template:
     metadata:
       name: pi
     spec:
-      completions: 10
-      parallelism: 2
       containers:
       - name: pi
         image: perl
